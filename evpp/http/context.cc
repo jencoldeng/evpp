@@ -39,9 +39,12 @@ bool Context::Init() {
 
 #endif
     const char* original_url = original_uri();
-    remote_ip_ = FindClientIPFromURI(original_url, strlen(original_url));
-    if (remote_ip_.empty()) {
+    std::pair<bool, std::string> ret = FindClientIPFromURI(original_url, strlen(original_url));
+    if(ret.first==false || ret.second.empty()) {
         remote_ip_ = req_->remote_host;
+    }
+    else{
+        remote_ip_ = std::move(ret.second);
     }
 
     return true;
@@ -59,13 +62,12 @@ const char* Context::FindRequestHeader(const char* key) {
     return evhttp_find_header(req_->input_headers, key);
 }
 
-std::string Context::FindQueryFromURI(const char* uri, size_t uri_len, const char* key, size_t key_len) {
-    static const std::string __s_nullptr = "";
+std::pair<bool, std::string> Context::FindQueryFromURI(const char* uri, size_t uri_len, const char* key, size_t key_len) {
 
     // Find query start point
     const char* start = strchr(const_cast<char*>(uri), '?');
     if (!start) {
-        return __s_nullptr;
+        return std::make_pair(false, std::string());
     }
 
     for (const char* p = start + 1; p < uri + uri_len;) {
@@ -81,9 +83,9 @@ std::string Context::FindQueryFromURI(const char* uri, size_t uri_len, const cha
             const char* v = p + key_len + 1;
             const char* end = strchr(const_cast<char*>(v), '&');
             if (!end) {
-                return v;
+                return std::make_pair(true, v);
             } else {
-                return std::string(v, end);
+                return std::make_pair(true, std::string(v, end));
             }
         }
 
@@ -91,20 +93,16 @@ std::string Context::FindQueryFromURI(const char* uri, size_t uri_len, const cha
         p += index;
         p = strchr(const_cast<char*>(p), '&');
         if (!p) {
-            return __s_nullptr;
+            return std::make_pair(false, std::string());
         }
         p += 1;
     }
 
-    return __s_nullptr;
+    return std::make_pair(false, std::string());
 }
 
-std::string Context::FindQueryFromURI(const char* uri, const char* key) {
+std::pair<bool, std::string> Context::FindQueryFromURI(const char* uri, const char* key) {
     return FindQueryFromURI(uri, strlen(uri), key, strlen(key));
-}
-
-std::string Context::FindQueryFromURI(const std::string& uri, const std::string& key) {
-    return FindQueryFromURI(uri.data(), uri.size(), key.data(), key.size());
 }
 
 }

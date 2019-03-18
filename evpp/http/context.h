@@ -5,6 +5,7 @@
 #include "evpp/timestamp.h"
 
 #include <map>
+#include <utility>
 
 struct evhttp_request;
 
@@ -62,16 +63,17 @@ public:
     }
 
     // Get the first value associated with the given key from the URI.
-    std::string GetQuery(const char* query_key, size_t key_len) {
+    std::pair<bool, std::string> GetQuery(const char* query_key, size_t key_len) {
         const char* u = original_uri();
         return FindQueryFromURI(u, strlen(u), query_key, key_len);
     }
-    std::string GetQuery(const std::string& query_key) {
+    std::pair<bool, std::string> GetQuery(const std::string& query_key) {
         return GetQuery(query_key.data(), query_key.size());
     }
 
 public:
-    static std::string FindClientIPFromURI(const char* uri, size_t uri_len) {
+
+    static std::pair<bool, std::string> FindClientIPFromURI(const char* uri, size_t uri_len) {
         static const std::string __s_clientip = "clientip";
         return FindQueryFromURI(uri, uri_len, __s_clientip.data(), __s_clientip.size());
     }
@@ -82,10 +84,18 @@ public:
     // @param[IN] uri_len - The uri length
     // @param[IN] key -
     // @param[IN] key_len -
-    // @return std::string -
-    static std::string FindQueryFromURI(const char* uri, size_t uri_len, const char* key, size_t key_len);
-    static std::string FindQueryFromURI(const char* uri, const char* key);
-    static std::string FindQueryFromURI(const std::string& uri, const std::string& key);
+    //
+    // @return first - true -
+    // @return second - std::string -
+    static std::pair<bool, std::string> FindQueryFromURI(const char* uri, size_t uri_len, const char* key, size_t key_len);
+    static std::pair<bool, std::string> FindQueryFromURI(const char* uri, const char* key);
+    static std::pair<bool, std::string> FindQueryFromURI(const std::string& uri, const std::string& key);
+
+    template<class StringType_1, class StringType_2>
+    static std::pair<bool, std::string> FindQueryFromURI(const StringType_1& uri, const StringType_2& key)
+    {
+        return FindQueryFromURI(uri.data(), uri.length(), key.data(), key.length());
+    }
 
 private:
     // The URI without any parameters : e.g. /status.html
