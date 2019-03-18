@@ -35,7 +35,7 @@ evpp
 
 4.修正了几个地方缺少vector的include语句
 
-5.`Context::FindQueryFromURI()`函数，返回pair，first表示是否能找到，second表示GET参数值。主要用于区别是否有该值，该值是否为空的情况。
+5.`Context::FindQueryFromURI()`函数，返回pair，first表示是否能找到，second表示GET参数值。主要用于区别是否有该值，该值是否为空的情况。另外增加了模板化，兼容string_view与string。
 
 
 # 简介 [English Introduce](readme.md)
