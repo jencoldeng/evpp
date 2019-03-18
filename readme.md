@@ -15,11 +15,15 @@ evpp
 # 主要修改几个用得不太习惯的地方：
 
 1.日志回调函数：evpp本身的日志，可以在CMake文件中配置绑定到glog，但是我的程序里并不适用glog，所以我修改了这部分，可以让用户指定自己的日志输出函数。见[evpp/logger.h](evpp/logger.h)，调用方可以调用`set_log_handler()`或者`set_log_stdout()`把日志输出到控制台(调试)或者输出到自己定义的回调函数.
+
 2.HTTP的初始化：`Server::Init()`函数限定一定要监听"0.0.0.0"，这在很多情况下都不能这样做，只能绑定某个IP，于是我改了一下接口：
+```
     bool Init(const std::string& ip_port);//新增
     bool Init(const std::string& ip, int listen_port); //新增需要用户指定IP
     bool Init(const std::string& ip, const std::vector<int>& listen_ports); //新增需要用户指定IP
     bool Init(const std::string& ip, const std::string& listen_ports/*like "80,8080,443"*/); //新增需要用户指定IP
+```
+
 3.上面修改的`Server::Init()`函数与测试用例可能不兼容，请在CMakeList中注释掉测试用例和example
 ```
 #if (NOT EVPP_VCPKG_BUILD)
@@ -28,6 +32,7 @@ evpp
 #    add_subdirectory (benchmark)
 #endif ()
 ```
+
 4.修正了几个地方缺少vector的include语句
 
 # Introduction  [中文说明](readme_cn.md)
