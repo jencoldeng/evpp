@@ -1,34 +1,46 @@
 #include <sys/types.h>
 #include <syscall.h>
 #include <unistd.h>
+#include <string.h>
 
 #include <ctime>
 #include <iostream>
 
 #include "logger.h"
 
+//日志回调函数
 static LogHandler handler = nullptr;
 
+//日志是否输出到stdout
+static bool log_stdout{false};
+
+//设置日志的handler
 void set_log_handler(LogHandler h)
 {
     handler = h;
 }
 
-const char* level_str(LogLevel level)
+//设置日志输出到stdout
+void set_log_stdout()
+{
+    log_stdout = true;
+}
+
+const char* level_str(EVPPLogLevel level)
 {
     switch(level)
     {
-        case LogLevel::TRACE:
+        case EVPPLogLevel::TRACE:
             return "TRACE";
-        case LogLevel::DEBUG:
+        case EVPPLogLevel::DEBUG:
             return "DEBUG";
-        case LogLevel::INFO:
+        case EVPPLogLevel::INFO:
             return "INFO";
-        case LogLevel::WARN:
+        case EVPPLogLevel::WARN:
             return "WARN";
-        case LogLevel::ERROR:
+        case EVPPLogLevel::ERROR:
             return "ERROR";
-        case LogLevel::FATAL:
+        case EVPPLogLevel::FATAL:
             return "FATAL";
     }
     return "UNKNOWN_LEVEL";
@@ -54,11 +66,15 @@ static pid_t GetTID()
 //----------------------------------
 Logger::~Logger()
 {
+    const char* filename = strrchr(filepath_, '/');
+    if(filename==nullptr || *(++filename)=='\0')
+        filename = filepath_;
+
     if(handler != nullptr)
     {
-        handler(level_, filename_, line_, this->str());
+        handler(level_, filename, line_, this->str());
     }
-    else
+    else if(log_stdout)
     {
         time_t now = time(nullptr);
         struct tm local_time;
@@ -75,7 +91,9 @@ Logger::~Logger()
                 local_time.tm_sec);
 
         std::cout<<tm_str<<" ["<<level_str(level_)<<"] "
-            "["<<filename_<<":"<<line_<<"] "
-            "["<<GetTID()<<"] "<<this->str()<<"\n";
+            "["<<GetTID()<<"] "
+            "["<<filename<<":"<<line_<<"] "<<this->str()<<"\n";
     }
+
+    return;
 }

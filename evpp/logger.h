@@ -4,7 +4,7 @@
 #include <string>
 #include <sstream>
 
-enum class LogLevel
+enum class EVPPLogLevel
 {
     TRACE,
     DEBUG,
@@ -14,19 +14,23 @@ enum class LogLevel
     FATAL,
 };
 
-typedef void (*LogHandler)(LogLevel level, 
+typedef void (*LogHandler)(EVPPLogLevel level, 
     const char* filename, 
     int line,
     const std::string& message);
 
+//设置日志的handler
 void set_log_handler(LogHandler h);
+
+//设置日志输出到stdout
+void set_log_stdout();
 
 class Logger : public std::stringstream
 {
 public:
-    Logger(LogLevel level, const char* filename, int line):
+    Logger(EVPPLogLevel level, const char* filepath, int line):
         level_(level),
-        filename_(filename),
+        filepath_(filepath),
         line_(line)
     {
         //NULL
@@ -36,7 +40,7 @@ public:
 
 private:
 
-    const LogLevel level_;
-    const char* filename_;
+    const EVPPLogLevel level_;
+    const char* filepath_;
     const int line_;
 };

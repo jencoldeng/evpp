@@ -1,6 +1,7 @@
 #pragma once
 
 #include <atomic>
+#include <vector>
 #include <map>
 
 #include "service.h"
@@ -58,9 +59,10 @@ public:
 			const char* certificate_chain_file = "",
 			const char* private_key_file = "");
 #endif
-    bool Init(int listen_port);
-    bool Init(const std::vector<int>& listen_ports);
-    bool Init(const std::string& listen_ports/*like "80,8080,443"*/);
+    bool Init(const std::string& ip_port);
+    bool Init(const std::string& ip, int listen_port);
+    bool Init(const std::string& ip, const std::vector<int>& listen_ports);
+    bool Init(const std::string& ip, const std::string& listen_ports/*like "80,8080,443"*/);
 
     bool Start();
 

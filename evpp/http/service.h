@@ -26,7 +26,7 @@ public:
 #endif
     ~Service();
 
-    bool Listen(int port);
+    bool Listen(int portconst, const char* ip);
     void Stop();
     void Pause();
     void Continue();

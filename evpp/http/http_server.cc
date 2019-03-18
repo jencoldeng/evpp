@@ -58,7 +58,7 @@ void Server::setPortSSLDefaultOption(
 }
 #endif
 
-bool Server::Init(int listen_port) {
+bool Server::Init(const std::string& ip, int listen_port) {
     status_.store(kInitializing);
     ListenThread lt;
     lt.thread = std::make_shared<EventLoopThread>();
@@ -74,7 +74,7 @@ bool Server::Init(int listen_port) {
 #else
     lt.hservice = std::make_shared<Service>(lt.thread->loop());
 #endif
-    if (!lt.hservice->Listen(listen_port)) {
+    if (!lt.hservice->Listen(listen_port, ip.c_str())) {
         int serrno = errno;
         LOG_ERROR << "this=" << this << " http server listen at port " << listen_port << " failed. errno=" << serrno << " " << strerror(serrno);
         lt.hservice->Stop();
@@ -85,11 +85,26 @@ bool Server::Init(int listen_port) {
     return true;
 }
 
-bool Server::Init(const std::vector<int>& listen_ports) {
+bool Server::Init(const std::string& ip_port)
+{
+    std::vector<std::string> vec;
+    int port = 0;
+
+    StringSplit(ip_port, ":", 0, vec);
+    if(vec.size() != 2 || vec[0].length()<7 || (port=std::atoi(vec[1].c_str()))<=0 )
+    {
+        LOG_ERROR << "this=" << this << "Invalid ip_port: ["<<ip_port<<"].";
+        return false;
+    }
+
+    return this->Init(vec[0], port);
+}
+
+bool Server::Init(const std::string& ip, const std::vector<int>& listen_ports) {
     status_.store(kInitializing);
     bool rc = true;
     for (auto lp : listen_ports) {
-        rc = rc && Init(lp);
+        rc = rc && Init(ip, lp);
     }
     if (rc) {
         status_.store(kInitialized);
@@ -99,7 +114,7 @@ bool Server::Init(const std::vector<int>& listen_ports) {
     return rc;
 }
 
-bool Server::Init(const std::string& listen_ports/*"80,8080,443"*/) {
+bool Server::Init(const std::string& ip, const std::string& listen_ports/*"80,8080,443"*/) {
     status_.store(kInitializing);
     std::vector<std::string> vec;
     StringSplit(listen_ports, ",", 0, vec);
@@ -114,7 +129,7 @@ bool Server::Init(const std::string& listen_ports/*"80,8080,443"*/) {
         v.push_back(i);
     }
 
-    auto rc = Init(v);
+    auto rc = Init(ip, v);
     if (rc) {
         status_.store(kInitialized);
     } else {
