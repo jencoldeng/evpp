@@ -30,17 +30,17 @@ const char* level_str(EVPPLogLevel level)
 {
     switch(level)
     {
-        case EVPPLogLevel::TRACE:
+        case EVPPLogLevel::EVPP_TRACE:
             return "TRACE";
-        case EVPPLogLevel::DEBUG:
+        case EVPPLogLevel::EVPP_DEBUG:
             return "DEBUG";
-        case EVPPLogLevel::INFO:
+        case EVPPLogLevel::EVPP_INFO:
             return "INFO";
-        case EVPPLogLevel::WARN:
+        case EVPPLogLevel::EVPP_WARN:
             return "WARN";
-        case EVPPLogLevel::ERROR:
+        case EVPPLogLevel::EVPP_ERROR:
             return "ERROR";
-        case EVPPLogLevel::FATAL:
+        case EVPPLogLevel::EVPP_FATAL:
             return "FATAL";
     }
     return "UNKNOWN_LEVEL";
@@ -64,7 +64,7 @@ static pid_t GetTID()
 }
 
 //----------------------------------
-Logger::~Logger()
+EVPP_Logger::~EVPP_Logger()
 {
     const char* filename = strrchr(filepath_, '/');
     if(filename==nullptr || *(++filename)=='\0')

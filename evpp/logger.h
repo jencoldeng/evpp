@@ -6,12 +6,12 @@
 
 enum class EVPPLogLevel
 {
-    TRACE,
-    DEBUG,
-    INFO,
-    WARN,
-    ERROR,
-    FATAL,
+    EVPP_TRACE,
+    EVPP_DEBUG,
+    EVPP_INFO,
+    EVPP_WARN,
+    EVPP_ERROR,
+    EVPP_FATAL,
 };
 
 typedef void (*LogHandler)(EVPPLogLevel level, 
@@ -25,10 +25,10 @@ void set_log_handler(LogHandler h);
 //设置日志输出到stdout
 void set_log_stdout();
 
-class Logger : public std::stringstream
+class EVPP_Logger : public std::stringstream
 {
 public:
-    Logger(EVPPLogLevel level, const char* filepath, int line):
+    EVPP_Logger(EVPPLogLevel level, const char* filepath, int line):
         level_(level),
         filepath_(filepath),
         line_(line)
@@ -36,7 +36,7 @@ public:
         //NULL
     }
 
-    ~Logger();
+    ~EVPP_Logger();
 
 private:
 
