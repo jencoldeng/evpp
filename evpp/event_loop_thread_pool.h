@@ -1,6 +1,7 @@
 #pragma once
 
 
+#include <vector>
 #include <atomic>
 
 #include "evpp/event_loop_thread.h"

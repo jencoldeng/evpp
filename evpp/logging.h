@@ -39,15 +39,15 @@
 
 #include "evpp/logger.h"
 
-#define LOG_TRACE Logger(LogLevel::TRACE, __FILE__, __LINE__)
-#define DLOG_TRACE Logger(LogLevel::TRACE, __FILE__, __LINE__)
-#define LOG_DEBUG Logger(LogLevel::DEBUG, __FILE__, __LINE__)
-#define LOG_INFO Logger(LogLevel::INFO, __FILE__, __LINE__)
-#define LOG_WARN Logger(LogLevel::WARN, __FILE__, __LINE__)
-#define DLOG_WARN Logger(LogLevel::WARN, __FILE__, __LINE__)
-#define LOG_ERROR Logger(LogLevel::ERROR, __FILE__, __LINE__)
-#define LOG_FATAL Logger(LogLevel::FATAL, __FILE__, __LINE__)
-#define CHECK_NOTnullptr Logger(LogLevel::ERROR, __FILE__, __LINE__)<< "'" #val "' Must be non nullptr";
+#define LOG_TRACE Logger(EVPPLogLevel::TRACE, __FILE__, __LINE__)
+#define DLOG_TRACE Logger(EVPPLogLevel::TRACE, __FILE__, __LINE__)
+#define LOG_DEBUG Logger(EVPPLogLevel::DEBUG, __FILE__, __LINE__)
+#define LOG_INFO Logger(EVPPLogLevel::INFO, __FILE__, __LINE__)
+#define LOG_WARN Logger(EVPPLogLevel::WARN, __FILE__, __LINE__)
+#define DLOG_WARN Logger(EVPPLogLevel::WARN, __FILE__, __LINE__)
+#define LOG_ERROR Logger(EVPPLogLevel::ERROR, __FILE__, __LINE__)
+#define LOG_FATAL Logger(EVPPLogLevel::FATAL, __FILE__, __LINE__)
+#define CHECK_NOTnullptr Logger(EVPPLogLevel::ERROR, __FILE__, __LINE__)<< "'" #val "' Must be non nullptr";
 
 #endif
 

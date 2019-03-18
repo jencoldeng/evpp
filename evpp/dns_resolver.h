@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include "evpp/inner_pre.h"
 #include "evpp/duration.h"
 #include "evpp/sys_addrinfo.h"

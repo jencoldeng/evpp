@@ -28,6 +28,7 @@ evpp
 #    add_subdirectory (benchmark)
 #endif ()
 ```
+4.修正了几个地方缺少vector的include语句
 
 # Introduction  [中文说明](readme_cn.md)
 
