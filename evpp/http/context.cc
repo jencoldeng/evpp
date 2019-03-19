@@ -54,6 +54,11 @@ const char* Context::original_uri() const {
     return req_->uri;
 }
 
+//client_ip
+const char* Context::client_ip() {
+    return req_->remote_host;
+}
+
 void Context::AddResponseHeader(const std::string& key, const std::string& value) {
     evhttp_add_header(req_->output_headers, key.data(), value.data());
 }

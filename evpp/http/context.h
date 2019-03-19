@@ -46,6 +46,9 @@ public:
         return remote_ip_;
     }
 
+    //client_ip
+    const char* client_ip();
+
     const Slice& body() const {
         return body_;
     }
