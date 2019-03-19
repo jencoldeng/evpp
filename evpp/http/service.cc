@@ -261,11 +261,11 @@ namespace evpp {
         }
 
         struct Response {
-            Response(const ContextPtr& c, const std::string& m)
+            Response(const ContextPtr& c, const std::string_view& m)
                 : ctx(c) {
                     if (m.size() > 0) {
                         buffer = evbuffer_new();
-                        evbuffer_add(buffer, m.c_str(), m.size());
+                        evbuffer_add(buffer, m.data(), m.size());
                     }
                 }
 
@@ -284,7 +284,7 @@ namespace evpp {
             struct evbuffer* buffer = nullptr;
         };
 
-        void Service::SendReply(const ContextPtr& ctx, const std::string& response_data) {
+        void Service::SendReply(const ContextPtr& ctx, const std::string_view& response_data) {
             // In the worker thread
             DLOG_TRACE << "send reply in working thread";
 

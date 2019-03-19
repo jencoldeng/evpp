@@ -37,8 +37,10 @@ evpp
 
 5.`Context::FindQueryFromURI()`函数，返回pair，first表示是否能找到，second表示GET参数值。主要用于区别是否有该值，该值是否为空的情况。另外增加了模板化，兼容string_view与string。
 
+6.支持C++17，使用std::string_view提升性能，不失兼容性。
 
-# 简介 [English Introduce](readme.md)
+
+# 简介 [English Introduce](readme_en.md)
 
 [evpp]是一个基于[libevent]开发的现代化C++11高性能网络服务器，自带TCP/UDP/HTTP等协议的异步非阻塞式的服务器和客户端库。
 

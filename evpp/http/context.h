@@ -6,6 +6,7 @@
 
 #include <map>
 #include <utility>
+#include <string_view>
 
 struct evhttp_request;
 
@@ -120,7 +121,7 @@ private:
 
 typedef std::shared_ptr<Context> ContextPtr;
 
-typedef std::function<void(const std::string& response_data)> HTTPSendResponseCallback;
+typedef std::function<void(const std::string_view& response_data)> HTTPSendResponseCallback;
 
 typedef std::function <
 void(EventLoop* loop,
