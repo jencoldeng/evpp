@@ -9,19 +9,19 @@
 #include "logger.h"
 
 //日志回调函数
-static LogHandler handler = nullptr;
+static EVPP_LogHandler_Type handler = nullptr;
 
 //日志是否输出到stdout
 static bool log_stdout{false};
 
 //设置日志的handler
-void set_log_handler(LogHandler h)
+void set_evpp_log_handler(EVPP_LogHandler_Type h)
 {
     handler = h;
 }
 
 //设置日志输出到stdout
-void set_log_stdout()
+void set_evpp_log_stdout()
 {
     log_stdout = true;
 }

@@ -14,16 +14,16 @@ enum class EVPPLogLevel
     EVPP_FATAL,
 };
 
-typedef void (*LogHandler)(EVPPLogLevel level, 
+typedef void (*EVPP_LogHandler_Type)(EVPPLogLevel level, 
     const char* filename, 
     int line,
     const std::string& message);
 
 //设置日志的handler
-void set_log_handler(LogHandler h);
+void set_evpp_log_handler(EVPP_LogHandler_Type h);
 
 //设置日志输出到stdout
-void set_log_stdout();
+void set_evpp_log_stdout();
 
 class EVPP_Logger : public std::stringstream
 {
