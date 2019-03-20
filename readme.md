@@ -37,7 +37,28 @@ evpp
 
 5.`Context::FindQueryFromURI()`函数，返回pair，first表示是否能找到，second表示GET参数值。主要用于区别是否有该值，该值是否为空的情况。另外增加了模板化，兼容string_view与string。
 
-6.支持C++17，使用std::string_view提升性能，不失兼容性。
+6.支持C++14，使用std::string_view提升性能，不失兼容性。注意与G++版本兼容。CMakeList.txt需要修改一个地方：
+```
+    set (CXX_FLAGS
+         -g
+         -fPIC
+         -Wall
+         -Wno-unused-parameter
+         -Wno-unused-function
+         -Wunused-variable
+         -Wunused-value
+         -Wshadow
+         -Wcast-qual
+         -Wcast-align
+         -Wwrite-strings
+         -Wsign-compare
+         -Winvalid-pch
+         -fms-extensions
+         -Wfloat-equal
+         -Wextra
+         -std=c++14 #这里改成c++14
+    )
+```
 
 
 # 简介 [English Introduce](readme_en.md)
