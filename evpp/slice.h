@@ -17,6 +17,7 @@
 #include <string.h>
 #include <assert.h>
 #include <string>
+#include <ostream>
 
 namespace evpp {
 
@@ -130,4 +131,11 @@ inline int Slice::compare(const Slice& b) const {
 
     return r;
 }
+
+//write to stream by jencoldeng 
+std::ostream& operator<<(std::ostream& os, const Slice& s) {
+    if(!s.empty())  os.write(s.data(), s.length());
+    return os;
+}
+
 }  // namespace evpp
