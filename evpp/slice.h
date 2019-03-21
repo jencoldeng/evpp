@@ -133,7 +133,7 @@ inline int Slice::compare(const Slice& b) const {
 }
 
 //write to stream by jencoldeng 
-std::ostream& operator<<(std::ostream& os, const Slice& s) {
+inline std::ostream& operator<<(std::ostream& os, const Slice& s) {
     if(!s.empty())  os.write(s.data(), s.length());
     return os;
 }
