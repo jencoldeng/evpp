@@ -50,6 +50,11 @@ public:
         return size_;
     }
 
+    //compatible for string/string_view, by jencoldeng
+    size_t length() const {
+        return size_;
+    }
+
     // Return true if the length of the referenced data is zero
     bool empty() const {
         return size_ == 0;
