@@ -208,7 +208,7 @@ std::string ToIPPort(const struct sockaddr_storage* ss) {
 
         port = ntohs(addr6->sin6_port);
     } else {
-        LOG_ERROR << "unknown socket family connected";
+        LOG_WARN << "unknown socket family connected";
         return empty_string;
     }
 
